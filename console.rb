@@ -1,7 +1,7 @@
 require_relative('models/property')
 require('pry')
 
-# Property.delete_all()
+Property.delete_all()
 
   property_1 = Property.new({
     'address' => '37 Castle Terrace',
@@ -17,18 +17,26 @@ require('pry')
     'year_built' => 1899
     })
 
+  property_3 = Property.new({
+    'address' => '56 Easter Langside Avenue',
+    'value' => 200,
+    'number_of_bedrooms' => 3,
+    'year_built' => 2008
+      })
 
     property_1.save()
     property_2.save()
-    #
-    # property_2.delete()
-    #
-    # property_1.address = 'CodeClan'
-    # property_1.update()
+    property_3.save()
 
-    # property_1.find()
-    # Property.find()
+    property_2.delete()
 
+    property_1.address = 'CodeClan'
+    property_1.update()
+
+
+    properties = Property.all()
+    easter = Property.find(property_3.id)
+    codeclan = Property.find_by_address("CodeClan")
 
 binding.pry
 nil

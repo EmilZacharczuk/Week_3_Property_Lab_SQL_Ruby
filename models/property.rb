@@ -2,6 +2,7 @@ require('pg')
 
 class Property
 
+  attr_reader :id
   attr_accessor :address, :value, :number_of_bedrooms, :year_built
 
   def initialize (details)
@@ -69,22 +70,41 @@ class Property
     db.close()
   end
 
-  def Property.find()
+  def Property.all()
     db = PG.connect ( {dbname: 'estate_agency', host: 'localhost'})
-    sql = "SELECT * FROM estate_agency WHERE id = $1"
-    values = [@id]
-    db.prepare("find", sql)
-    db.exec_prepared("find", values)
+    sql = "SELECT * FROM estate_agency"
+    db.prepare("all", sql)
+    db.exec_prepared("all")
+    properties = db.exec_prepared("all")
     db.close()
+    return properties.map { |property_hash| Property.new(property_hash)}
   end
 
+  def Property.find(id)
+    db = PG.connect ( {dbname: 'estate_agency', host: 'localhost'})
+    sql = "SELECT * FROM estate_agency WHERE id = $1"
+    values = [id]
+    db.prepare("find", sql)
+    result_array = db.exec_prepared("find", values)
+    db.close()
+    property_hash = result_array[0]
+    found_property = Property.new(property_hash)
+    return found_property
 
+  end
 
+  def Property.find_by_address(address)
+    db = PG.connect ( {dbname: 'estate_agency', host: 'localhost'})
+    sql = "SELECT * FROM estate_agency WHERE address = $1"
+    values = [address]
+    db.prepare("find_by_address", sql)
+    result_array = db.exec_prepared("find_by_address", values)
+    db.close()
+    property_hash = result_array[0]
+    found_property = Property.new(property_hash)
+    return found_property
 
-
-
-
-
+  end
 
 
 
